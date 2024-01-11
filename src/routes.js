@@ -15,6 +15,8 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMoney, faUser } from '@fortawesome/free-solid-svg-icons';
 import Dashboard from "views/Dashboard.js";
 import LeadView from "views/LeadView.js";
 import Map from "views/Map.js";
@@ -37,7 +39,7 @@ var routes = [
     path: "/icons",
     name: "Leads",
     rtlName: "الرموز",
-    icon: "tim-icons icon-atom",
+    icon: "tim-icons icon-pin",
     component: <LeadView />,
     layout: "/admin",
   },
@@ -45,7 +47,7 @@ var routes = [
     path: "/map",
     name: "Bookings",
     rtlName: "خرائط",
-    icon: "tim-icons icon-pin",
+    icon:"tim-icons icon-pin",
     component: <Map />,
     layout: "/admin",
   },
@@ -53,7 +55,7 @@ var routes = [
     path: "/notifications",
     name: "Sales",
     rtlName: "إخطارات",
-    icon: "tim-icons icon-bell-55",
+    icon: "tim-icons icon-pin",
     component: <Notifications />,
     layout: "/admin",
   },
@@ -62,7 +64,7 @@ var routes = [
     path: "/Funnels",
     name: "Funnels",
     rtlName: "إخطارات",
-    icon: "tim-icons icon-bell-55",
+    icon: "tim-icons icon-pin",
     component: <Typography />,
     layout: "/admin",
   },
