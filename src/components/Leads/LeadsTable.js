@@ -254,7 +254,7 @@ const paginationButtonStyle = {
   background: "transparent",
   color: "#525F7F",
   padding: "8px 16px",
-  margin: "0 4px 16px 4px",
+  margin: "16px 4px 16px 4px",
   cursor: "pointer",
 };
 
