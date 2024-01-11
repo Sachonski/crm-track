@@ -16,7 +16,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 const LeadsSearch = () => {
   
   const thirtyDaysAgo = new Date();
-
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
   const [startDate, setStartDate] = useState(thirtyDaysAgo);
   const [endDate, setEndDate] = useState(new Date());
@@ -79,7 +78,7 @@ const LeadsSearch = () => {
                   </FormGroup>
                 </Col>
                 <Col md="12">
-                  <Button color="primary" onClick={handleSearch}>
+                  <Button color="#2872F6" onClick={handleSearch}>
                     Search
                   </Button>
                 </Col>
