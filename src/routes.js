@@ -58,6 +58,15 @@ var routes = [
     layout: "/admin",
   },
 
+  {
+    path: "/Funnels",
+    name: "Funnels",
+    rtlName: "إخطارات",
+    icon: "tim-icons icon-bell-55",
+    component: <Typography />,
+    layout: "/admin",
+  },
+ 
   
 ];
 export default routes;
