@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useEffect } from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // react plugin used to create charts
@@ -50,8 +50,26 @@ import {
   chartExample4,
 } from "variables/charts.js";
 
+// DB Axios
+import axios from 'axios'
+
 function Dashboard(props) {
   const [bigChartData, setbigChartData] = React.useState("data1");
+  const [payments, setPayments] = React.useState([])
+
+
+  useEffect(() =>{
+    axios.post('http://localhost:3001/',{
+      query:"SELECT SUM(payment_amount) FROM Payments"
+    })
+    .then((response)=>{
+      
+      console.log(response.data[0])
+      setPayments(response.data[0]["SUM(payment_amount)"])
+    })
+    
+  },[])
+  
   const setBgChartData = (name) => {
     setbigChartData(name);
   };
@@ -144,7 +162,7 @@ function Dashboard(props) {
               <CardHeader>
                 <h5 className="card-category">Total Shipments</h5>
                 <CardTitle tag="h3">
-                  <i className="tim-icons icon-bell-55 text-info" /> 763,215
+                  <i className="tim-icons icon-bell-55 text-info" /> {payments}
                 </CardTitle>
               </CardHeader>
               <CardBody>
