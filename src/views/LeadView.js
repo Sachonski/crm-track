@@ -17,7 +17,6 @@
 */
 import React from "react";
 import LeadsSearch from "components/Leads/LeadsSearch";
-import ListDisplay from "components/Leads/ListDisplay";
 // reactstrap components
 import { Card, CardHeader, CardBody, Row, Col } from "reactstrap";
 
