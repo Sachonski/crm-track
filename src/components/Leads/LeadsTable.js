@@ -158,7 +158,7 @@ console.log(props)
             >
               Close
             </button>
-            <h3>Journey details for {selectedLead.fullName}</h3>
+            <h3>Journey details for {selectedLead.full_name}</h3>
             {/* la journey va aca */}
           </div>
         </div>
