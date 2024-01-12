@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Col,
   Row,
@@ -13,14 +13,37 @@ import {
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
+import axios from 'axios';
+import ListDisplay from './ListDisplay'; // Asegúrate de tener la ruta correcta
+
 const LeadsSearch = () => {
-  
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
   const [startDate, setStartDate] = useState(thirtyDaysAgo);
   const [endDate, setEndDate] = useState(new Date());
-  const [searchTerm, setSearchTerm] = useState('');const handleSearch = () => {
+  const [data, setData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [totalResults, setTotalResults] = useState('')
+
+  const handleSearch = (offsetData) => {
     // Implement your search functionality here
+    let offsetQuery = typeof offsetData === 'number' ? offsetData : "0";
+    const fetchQuery = async (query) => {
+      console.log(offsetQuery)
+      console.log(query)
+      const res = await axios.post('http://localhost:3001/', {
+        query: query,
+      });
+      console.log(res)
+      if(res.data[0]){
+      setData(res.data);
+      setTotalResults(res.data[0].suma_contactos)
+      console.log(data)
+      console.log(totalResults)
+      }
+    };
+
+    fetchQuery('SELECT *, (SELECT COUNT(id) FROM Contacts) AS suma_contactos FROM Contacts ORDER BY id LIMIT 10 OFFSET ' + offsetQuery);
     console.log('Search term:', searchTerm);
     console.log('Start Date:', startDate);
     console.log('End Date:', endDate);
@@ -31,13 +54,9 @@ const LeadsSearch = () => {
       <Row>
         <Col md="12">
           <Card>
-            <CardHeader>
-              
-              
-            </CardHeader>
+            <CardHeader></CardHeader>
             <CardBody className="all-icons">
               <Row>
-                
                 <Col md="4">
                   <FormGroup>
                     <Label for="startDate">From:</Label>
@@ -66,7 +85,7 @@ const LeadsSearch = () => {
                 </Col>
               </Row>
               <Row>
-              <Col md="4">
+                <Col md="4">
                   <FormGroup>
                     <Label for="search">Search:</Label>
                     <Input
@@ -87,6 +106,8 @@ const LeadsSearch = () => {
           </Card>
         </Col>
       </Row>
+      {/* Cambiado de LeadsTable a ListDisplay */}
+      <ListDisplay dataList={data} totalResults={totalResults} handleSearch={handleSearch} />
     </div>
   );
 };

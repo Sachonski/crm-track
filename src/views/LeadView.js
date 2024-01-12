@@ -16,8 +16,8 @@
 
 */
 import React from "react";
-import LeadsSearch from "components/Leads/LeadsSearch.js";
-import LeadsTable from "components/Leads/LeadsTable";
+import LeadsSearch from "components/Leads/LeadsSearch";
+import ListDisplay from "components/Leads/ListDisplay";
 // reactstrap components
 import { Card, CardHeader, CardBody, Row, Col } from "reactstrap";
 
@@ -31,13 +31,13 @@ function LeadView() {
               <CardHeader>
                 <h3 className="title">Leads</h3>
                 <p className="category"></p>
-                <LeadsSearch/>
-                <LeadsTable/>
-              </CardHeader>            
-            </Card>       
-          </Col>      
+              </CardHeader>
+              <CardBody>
+                <LeadsSearch />
+              </CardBody>
+            </Card>
+          </Col>
         </Row>
-       
       </div>
     </>
   );
