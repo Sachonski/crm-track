@@ -137,7 +137,7 @@ function AdminNavbar(props) {
                   onClick={(e) => e.preventDefault()}
                 >
                   <div className="photo">
-                   
+                    
                   </div>
                
                 </DropdownToggle>
