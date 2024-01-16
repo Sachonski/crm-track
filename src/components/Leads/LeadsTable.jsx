@@ -151,7 +151,17 @@ const LeadsTable = (props) => {
                   );
                   break;
                   case lead.booking_created_at != null:
-                    /* ACA EL BOOKING*/
+                    return(
+                      <h3
+                      style={{
+                        textTransform: "capitalize",
+                        fontSize: "13px",
+                        marginLeft: "20px",
+                      }}
+                    >
+                      • {lead.contact_created_date} | Book: {lead.booking_status}
+                    </h3>
+                    )/* ACA EL BOOKING*/
                     break
                 default:
                   break;
