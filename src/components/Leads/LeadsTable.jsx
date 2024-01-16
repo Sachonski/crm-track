@@ -124,10 +124,10 @@ const LeadsTable = (props) => {
               switch(true){
                 case lead.payment_amount != null:
                  return <h3>{lead.payment_date} Payment: Amount ${lead.payment_amount} Product: {lead.product_name}  Funnel: {lead.funnel_name} || {lead.step_name}</h3> 
-                  break
+                  
                 case lead.funnel_name != null && lead.payment_amount == null:
                   return <h3>{lead.contact_created_date} Funnel: {lead.funnel_name} || {lead.step_name}</h3> 
-                break
+                
                   default:
                     break
               }
