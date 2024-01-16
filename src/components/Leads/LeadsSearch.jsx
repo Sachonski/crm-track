@@ -57,11 +57,11 @@ const LeadsSearch = () => {
 
   //PARTE NUEVA TERMINA
 
- /* useEffect(() => {
+  useEffect(() => {
 
     setter()
 
-  }, [])*/
+  }, [])
 
 
   return (
