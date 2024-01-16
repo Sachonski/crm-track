@@ -123,10 +123,10 @@ const LeadsTable = (props) => {
             {selectedLead.map(lead =>{
               switch(true){
                 case lead.payment_amount != null:
-                 return <h3>{lead.payment_date} Payment: Amount ${lead.payment_amount} Product: {lead.product_name}  Funnel: {lead.funnel_name} || {lead.step_name}</h3> 
+                 return <h3 style={{ color:"green" ,textTransform: 'capitalize', fontSize: '13px', marginLeft: '20px'}}>• {lead.payment_date} | Payment: ${lead.payment_amount} | Product: {lead.product_name}  Funnel: {lead.funnel_name} | Step: {lead.step_name}</h3> 
                   break
                 case lead.funnel_name != null && lead.payment_amount == null:
-                  return <h3>{lead.contact_created_date} Funnel: {lead.funnel_name} || {lead.step_name}</h3> 
+                  return <h3 style={{ textTransform: 'capitalize' , fontSize: '13px', marginLeft: '20px' }}>• {lead.contact_created_date} | Funnel: {lead.funnel_name} | Step: {lead.step_name}</h3> 
                 break
                   default:
                     break
