@@ -92,7 +92,7 @@ console.log(props)
             style={{
               border: "1px solid #525F7F",
               background: "rgba(82, 95, 127, 0.5)",
-              color: "white",
+              color: "#c4c4c4",
               padding: "0 4px 0px 4px",
               cursor: "pointer",
             }}
@@ -152,9 +152,10 @@ console.log(props)
               style={{
                 border: "1px solid #525F7F",
                 background: "rgba(82, 95, 127, 0.5)",
-                color: "white",
+                color: "#c4c4c4",
                 padding: "8px 16px",
                 cursor: "pointer",
+                borderRadius: "4px",
               }}
             >
               Close
@@ -199,7 +200,7 @@ console.log(props)
                 {row.cells.map((cell) => (
                   <td
                     {...cell.getCellProps()}
-                    style={{ padding: "8px", borderRight: "1px solid #525F7F", color: "white"}}
+                    style={{ padding: "8px", borderRight: "1px solid #525F7F", color: "#c4c4c4"}}
                   >
                     {cell.render("Cell")}
                   </td>
@@ -253,7 +254,7 @@ console.log(props)
 const paginationButtonStyle = {
   border: "1px solid #525F7F",
   background: "rgba(82, 95, 127, 0.5)",
-  color: "white",
+  color: "#c4c4c4",
   padding: "8px 16px",
   margin: "16px 4px 16px 4px",
   cursor: "pointer",
