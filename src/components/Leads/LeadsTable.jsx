@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { useTable, usePagination } from "react-table";
+import 'react-datepicker/dist/react-datepicker.css';
 
 // Replace this with your actual lead data
 const leadsData = [
@@ -90,8 +91,8 @@ console.log(props)
             onClick={() => handleInfoClick(row.original)}
             style={{
               border: "1px solid #525F7F",
-              background: "transparent",
-              color: "#525F7F",
+              background: "rgba(82, 95, 127, 0.5)",
+              color: "white",
               padding: "0 4px 0px 4px",
               cursor: "pointer",
             }}
@@ -150,8 +151,8 @@ console.log(props)
               onClick={() => setPopupVisible(false)}
               style={{
                 border: "1px solid #525F7F",
-                background: "transparent",
-                color: "#525F7F",
+                background: "rgba(82, 95, 127, 0.5)",
+                color: "white",
                 padding: "8px 16px",
                 cursor: "pointer",
               }}
@@ -198,7 +199,7 @@ console.log(props)
                 {row.cells.map((cell) => (
                   <td
                     {...cell.getCellProps()}
-                    style={{ padding: "8px", borderRight: "1px solid #525F7F" }}
+                    style={{ padding: "8px", borderRight: "1px solid #525F7F", color: "white"}}
                   >
                     {cell.render("Cell")}
                   </td>
@@ -251,11 +252,12 @@ console.log(props)
 
 const paginationButtonStyle = {
   border: "1px solid #525F7F",
-  background: "transparent",
-  color: "#525F7F",
+  background: "rgba(82, 95, 127, 0.5)",
+  color: "white",
   padding: "8px 16px",
   margin: "16px 4px 16px 4px",
   cursor: "pointer",
+  
 };
 
 export default LeadsTable;
