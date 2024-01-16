@@ -2,74 +2,18 @@ import React, { useMemo, useState } from "react";
 import { useTable, usePagination } from "react-table";
 import 'react-datepicker/dist/react-datepicker.css';
 
-// Replace this with your actual lead data
-const leadsData = [
-  {
-    date: "01/01/2024",
-    fullName: "John Doe",
-    email: "john@example.com",
-    phone: "123-456-7890",
-    salesRep: "Jane Smith",
-    sales: 1000,
-    originSource: "Ads",
-    lastSource: "Funnel",
-  },
-  {
-    date: "01/01/2024",
-    fullName: "John Doe 1",
-    email: "john@example.com",
-    phone: "123-456-7890",
-    salesRep: "Jane Smith",
-    sales: 1000,
-    originSource: "Ads",
-    lastSource: "Funnel",
-  },
-  {
-    date: "01/01/2024",
-    fullName: "John Doe 2",
-    email: "john@example.com",
-    phone: "123-456-7890",
-    salesRep: "Jane Smith",
-    sales: 1000,
-    originSource: "Ads",
-    lastSource: "Funnel",
-  },
-  {
-    date: "01/01/2024",
-    fullName: "John Doe 3",
-    email: "john@example.com",
-    phone: "123-456-7890",
-    salesRep: "Jane Smith",
-    sales: 1000,
-    originSource: "Ads",
-    lastSource: "Funnel",
-  },
-  {
-    date: "01/01/2024",
-    fullName: "John Doe 4",
-    email: "john@example.com",
-    phone: "123-456-7890",
-    salesRep: "Jane Smith",
-    sales: 1000,
-    originSource: "Ads",
-    lastSource: "Funnel",
-  },
-  {
-    date: "01/01/2024",
-    fullName: "John Doe 5",
-    email: "john@example.com",
-    phone: "123-456-7890",
-    salesRep: "Jane Smith",
-    sales: 1000,
-    originSource: "Ads",
-    lastSource: "Funnel",
-  },
-];
 
 const LeadsTable = (props) => {
   const [popupVisible, setPopupVisible] = useState(false);
-  const [selectedLead, setSelectedLead] = useState(null);
-console.log(props)
+  const [selectedLead, setSelectedLead] = useState([]);
+
+  async function setter(querySearch) {
+    setSelectedLead(await props.fetchQuery(querySearch))
+  }
+
+
+
+
   const columns = useMemo(
     () => [
       { Header: "Date", accessor: "created_date" },
@@ -138,7 +82,21 @@ console.log(props)
 
   const handleInfoClick = (lead) => {
     // Handle +Info button click
-    setSelectedLead(lead);
+    console.log("aca viene el lead")
+    console.log(lead)
+    const querySearch = "SELECT c.full_name AS contact_full_name, c.email AS contact_email, c.phone, c.sales_rep AS contact_sales_rep, c.fk_sorfware_id, DATE_FORMAT(c.created_date, '%Y-%m-%d %H:%i') AS contact_created_date, c.utm_source, (SELECT full_name FROM Bookings WHERE email = c.email) AS booking_full_name, (SELECT setter FROM Bookings WHERE email = c.email) AS setter, (SELECT sales_rep FROM Bookings WHERE email = c.email) AS booking_sales_rep, (SELECT created_at FROM Bookings WHERE email = c.email) AS booking_created_at, (SELECT booked_at FROM Bookings WHERE email = c.email) AS booked_at, (SELECT status FROM Bookings WHERE email = c.email) AS booking_status, (SELECT payment_amount FROM Payments WHERE fk_contact = c.id) AS payment_amount, (SELECT product_name FROM Payments WHERE fk_contact = c.id) AS product_name, (SELECT product_description FROM Payments WHERE fk_contact = c.id) AS product_description, (SELECT subscription_id FROM Payments WHERE fk_contact = c.id) AS subscription_id, (SELECT DATE_FORMAT(payment_date, '%Y-%m-%d %H:%i') FROM Payments WHERE fk_contact = c.id) AS payment_date, (SELECT software_description FROM Softwares WHERE id = c.fk_sorfware_id) AS software_description, (SELECT funnel_id FROM Softwares WHERE id = c.fk_sorfware_id) AS funnel_id, (SELECT step_id FROM Softwares WHERE id = c.fk_sorfware_id) AS step_id, (SELECT funnel_name FROM Softwares WHERE id = c.fk_sorfware_id) AS funnel_name, (SELECT step_name FROM Softwares WHERE id = c.fk_sorfware_id) AS step_name FROM Contacts c WHERE c.email = '" + lead.email + "'"
+    setter(querySearch).then(
+      setPopupVisible(true)
+      
+    ).then(
+      function(){
+        console.log("aca viene el selectedLead")
+        console.log(selectedLead)
+      }
+
+    )
+    
+    //setSelectedLead(lead);
     setPopupVisible(true);
   };
 
@@ -160,7 +118,22 @@ console.log(props)
             >
               Close
             </button>
-            <h3>Journey details for {selectedLead.full_name}</h3>
+            
+            <h3>Journey details for {selectedLead[0]? selectedLead[0].contact_full_name : ""}</h3>
+            {selectedLead.map(lead =>{
+              switch(true){
+                case lead.payment_amount != null:
+                 return <h3>{lead.payment_date} Payment: Amount ${lead.payment_amount} Product: {lead.product_name}  Funnel: {lead.funnel_name} || {lead.step_name}</h3> 
+                  break
+                case lead.funnel_name != null && lead.payment_amount == null:
+                  return <h3>{lead.contact_created_date} Funnel: {lead.funnel_name} || {lead.step_name}</h3> 
+                break
+                  default:
+                    break
+              }
+            }
+          )}
+            
             {/* la journey va aca */}
           </div>
         </div>
