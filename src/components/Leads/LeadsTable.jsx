@@ -257,7 +257,7 @@ const paginationButtonStyle = {
   padding: "8px 16px",
   margin: "16px 4px 16px 4px",
   cursor: "pointer",
-  
+  borderRadius: "4px",
 };
 
 export default LeadsTable;
