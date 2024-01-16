@@ -78,15 +78,13 @@ const LeadsTable = (props) => {
 
   const handleInfoClick = (lead) => {
     // Handle +Info button click
-    console.log("aca viene el lead");
-    console.log(lead);
-    const querySearch =
-      "SELECT c.full_name AS contact_full_name, c.email AS contact_email, c.phone, c.sales_rep AS contact_sales_rep, c.fk_sorfware_id, DATE_FORMAT(c.created_date, '%Y-%m-%d %H:%i') AS contact_created_date, c.utm_source, (SELECT full_name FROM Bookings WHERE email = c.email) AS booking_full_name, (SELECT setter FROM Bookings WHERE email = c.email) AS setter, (SELECT sales_rep FROM Bookings WHERE email = c.email) AS booking_sales_rep, (SELECT DATE_FORMAT(created_at, '%Y-%m-%d %H:%i') FROM Bookings WHERE email = c.email) AS booking_created_at, (SELECT DATE_FORMAT(booked_at, '%Y-%m-%d %H:%i') FROM Bookings WHERE email = c.email) AS booked_at, (SELECT status FROM Bookings WHERE email = c.email) AS booking_status, (SELECT payment_amount FROM Payments WHERE fk_contact = c.id) AS payment_amount, (SELECT product_name FROM Payments WHERE fk_contact = c.id) AS product_name, (SELECT product_description FROM Payments WHERE fk_contact = c.id) AS product_description, (SELECT subscription_id FROM Payments WHERE fk_contact = c.id) AS subscription_id, (SELECT DATE_FORMAT(payment_date, '%Y-%m-%d %H:%i') FROM Payments WHERE fk_contact = c.id) AS payment_date, (SELECT software_description FROM Softwares WHERE id = c.fk_sorfware_id) AS software_description, (SELECT funnel_id FROM Softwares WHERE id = c.fk_sorfware_id) AS funnel_id, (SELECT step_id FROM Softwares WHERE id = c.fk_sorfware_id) AS step_id, (SELECT funnel_name FROM Softwares WHERE id = c.fk_sorfware_id) AS funnel_name, (SELECT step_name FROM Softwares WHERE id = c.fk_sorfware_id) AS step_name FROM Contacts c WHERE c.email = '" +
-      lead.email +
-      "'";
+
+    const querySearch ="SELECT c.full_name AS contact_full_name, c.email AS contact_email, c.phone, c.sales_rep AS contact_sales_rep, c.fk_sorfware_id, DATE_FORMAT(c.created_date, '%Y-%m-%d %H:%i') AS contact_created_date, c.utm_source, (SELECT full_name FROM Bookings WHERE email = c.email LIMIT 1) AS booking_full_name, (SELECT setter FROM Bookings WHERE email = c.email LIMIT 1) AS setter, (SELECT sales_rep FROM Bookings WHERE email = c.email LIMIT 1) AS booking_sales_rep, DATE_FORMAT((SELECT created_at FROM Bookings WHERE email = c.email LIMIT 1), '%Y-%m-%d %H:%i') AS booking_created_at, DATE_FORMAT((SELECT booked_at FROM Bookings WHERE email = c.email LIMIT 1), '%Y-%m-%d %H:%i') AS booked_at, (SELECT status FROM Bookings WHERE email = c.email LIMIT 1) AS booking_status, (SELECT payment_amount FROM Payments WHERE fk_contact = c.id LIMIT 1) AS payment_amount, (SELECT product_name FROM Payments WHERE fk_contact = c.id LIMIT 1) AS product_name, (SELECT product_description FROM Payments WHERE fk_contact = c.id LIMIT 1) AS product_description, (SELECT subscription_id FROM Payments WHERE fk_contact = c.id LIMIT 1) AS subscription_id, DATE_FORMAT((SELECT payment_date FROM Payments WHERE fk_contact = c.id LIMIT 1), '%Y-%m-%d %H:%i') AS payment_date, (SELECT software_description FROM Softwares WHERE id = c.fk_sorfware_id LIMIT 1) AS software_description, (SELECT funnel_id FROM Softwares WHERE id = c.fk_sorfware_id LIMIT 1) AS funnel_id, (SELECT step_id FROM Softwares WHERE id = c.fk_sorfware_id LIMIT 1) AS step_id, (SELECT funnel_name FROM Softwares WHERE id = c.fk_sorfware_id LIMIT 1) AS funnel_name, (SELECT step_name FROM Softwares WHERE id = c.fk_sorfware_id LIMIT 1) AS step_name FROM Contacts c WHERE c.email = '"+ lead.email + "';";
+  
     setter(querySearch)
       .then(setPopupVisible(true))
       .then(function () {
+        console.log(querySearch)
         console.log("aca viene el selectedLead");
         console.log(selectedLead);
       });
@@ -159,9 +157,9 @@ const LeadsTable = (props) => {
                         marginLeft: "20px",
                       }}
                     >
-                      • {lead.contact_created_date} | Book: {lead.booking_status}
+                      • {lead.contact_created_date} | Book: {lead.booking_status} 
                     </h3>
-                    )/* ACA EL BOOKING*/
+                    )
                     break
                 default:
                   break;
