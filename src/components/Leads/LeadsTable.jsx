@@ -151,7 +151,16 @@ const LeadsTable = (props) => {
                   );
                   break;
                   case lead.booking_created_at != null:
-                    /* ACA EL BOOKING*/
+                    return <h3
+                    style={{
+                      color:"orange",
+                      textTransform: "capitalize",
+                      fontSize: "13px",
+                      marginLeft: "20px",
+                    }}
+                  >
+                    • {Date} | {Name} booked on {Event Name} with {Sales Rep} 
+                  </h3>
                     break
                 default:
                   break;
