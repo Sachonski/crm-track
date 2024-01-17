@@ -143,6 +143,7 @@ const LeadsTable = (props) => {
                         textTransform: "capitalize",
                         fontSize: "13px",
                         marginLeft: "20px",
+                        marginBottom: "3px",
                       }}
                     >
                       • {lead.f_created_date} | <b>Payment:</b> ${lead.payment_amount} |
@@ -158,6 +159,7 @@ const LeadsTable = (props) => {
                         textTransform: "capitalize",
                         fontSize: "13px",
                         marginLeft: "20px",
+                        marginBottom: "3px",
                       }}
                     >
                       • {lead.f_created_date} | <b>Funnel:</b> {lead.funnel_name}{" "}
@@ -174,6 +176,7 @@ const LeadsTable = (props) => {
                         textTransform: "capitalize",
                         fontSize: "13px",
                         marginLeft: "20px",
+                        marginBottom: "3px",
                       }}
                     >
                       • {lead.f_created_date} | <b>Booked at</b> {lead.booked_at} <b>with</b> {lead.sales_rep} - {lead.setter} | <b>Status:</b> {lead.status}
