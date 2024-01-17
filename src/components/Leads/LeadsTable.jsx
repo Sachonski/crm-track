@@ -5,33 +5,31 @@ import "react-datepicker/dist/react-datepicker.css";
 const LeadsTable = (props) => {
   const [popupVisible, setPopupVisible] = useState(false);
   const [selectedLead, setSelectedLead] = useState([]);
-  const [selectedLeadName, setSelectedLeadName] = useState({full_name:""})
-
+  const [selectedLeadName, setSelectedLeadName] = useState({ full_name: "" });
 
   async function setter(lead) {
     const bookingQuery = `SELECT *, 'booking' AS type, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i') as f_created_date, DATE_FORMAT(booked_at, '%Y-%m-%d %H:%i') as booked_at, CASE WHEN setter = 'I acknowledge this and promise' THEN NULL ELSE setter END AS setter FROM Bookings WHERE Email = '${lead.email}' AND Status != 'canceled';`;
     const contactQuery = `SELECT DISTINCT Contacts.*, 'contact' AS type, DATE_FORMAT(Contacts.created_date, '%Y-%m-%d %H:%i') AS f_created_date, Softwares.* FROM Contacts LEFT JOIN Payments ON Contacts.id = Payments.fk_contact LEFT JOIN Softwares ON Contacts.fk_sorfware_id = Softwares.id WHERE Contacts.email = '${lead.email}' AND Payments.fk_contact IS NULL AND Contacts.fk_sorfware_id IS NOT NULL AND Contacts.fk_bookings IS NULL GROUP BY Contacts.created_date, Contacts.fk_sorfware_id;`;
     const paymentQuery = `SELECT Payments.*,'payment' AS type,COALESCE(DATE_FORMAT(Payments.first_payment_date, '%Y-%m-%d %H:%i'), DATE_FORMAT(Payments.payment_date, '%Y-%m-%d %H:%i')) AS f_created_date, Softwares.funnel_id, Softwares.step_id, Softwares.funnel_name, Softwares.step_name FROM Payments INNER JOIN Contacts ON Payments.fk_contact = Contacts.id LEFT JOIN Softwares ON Payments.fk_software = Softwares.id WHERE Contacts.email = '${lead.email}'`;
-  
+
     const response = await Promise.all([
       props.fetchQuery(bookingQuery),
       props.fetchQuery(contactQuery),
-      props.fetchQuery(paymentQuery)
+      props.fetchQuery(paymentQuery),
     ]);
-  
+
     const responseConType = response.flatMap((results, index) => {
-      const type = index === 0 ? 'booking' : index === 1 ? 'contact' : 'payment';
-      return results.map(obj => ({ ...obj, type }));
+      const type =
+        index === 0 ? "booking" : index === 1 ? "contact" : "payment";
+      return results.map((obj) => ({ ...obj, type }));
     });
-  
+
     // Ordenar por la propiedad f_created_date
     const newData = responseConType.sort(
       (a, b) => new Date(a.f_created_date) - new Date(b.f_created_date)
     );
     setSelectedLead(newData);
   }
-
-
 
   const columns = useMemo(
     () => [
@@ -101,17 +99,13 @@ const LeadsTable = (props) => {
 
   const handleInfoClick = (lead) => {
     // Handle +Info button click
-    setSelectedLeadName(prev =>{
-      if(prev.contact_id !== lead.contact_id){
-        setSelectedLead([])
-        setter(lead)
-        .then(setPopupVisible(true))
+    setSelectedLeadName((prev) => {
+      if (prev.contact_id !== lead.contact_id) {
+        setSelectedLead([]);
+        setter(lead).then(setPopupVisible(true));
       }
-      return lead
-    })
-
-      
-
+      return lead;
+    });
   };
 
   return (
@@ -133,9 +127,13 @@ const LeadsTable = (props) => {
               Close
             </button>
 
-            <h3>
-              Journey details for{" "}
-              {selectedLeadName.full_name}
+            <h3
+              style={{
+                marginTop: "10px",
+                marginBottom: "10px",
+              }}
+            >
+              Journey details for {selectedLeadName.full_name}:
             </h3>
             {selectedLead.map((lead) => {
               switch (lead.type) {
@@ -150,8 +148,9 @@ const LeadsTable = (props) => {
                         marginBottom: "3px",
                       }}
                     >
-                      • {lead.f_created_date} | <b>Payment:</b> ${lead.payment_amount} |
-                      <b> Product:</b> {lead.product_name} | <b>Funnel:</b> {lead.funnel_name} |
+                      • {lead.f_created_date} | <b>Payment:</b> $
+                      {lead.payment_amount} |<b> Product:</b>{" "}
+                      {lead.product_name} | <b>Funnel:</b> {lead.funnel_name} |
                       <b> Step:</b> {lead.step_name}
                     </h3>
                   );
@@ -166,13 +165,12 @@ const LeadsTable = (props) => {
                         marginBottom: "3px",
                       }}
                     >
-                      • {lead.f_created_date} | <b>Funnel:</b> {lead.funnel_name}{" "}
-                      | <b>Step:</b> {lead.step_name}
+                      • {lead.f_created_date} | <b>Funnel:</b>{" "}
+                      {lead.funnel_name} | <b>Step:</b> {lead.step_name}
                     </h3>
                   );
                   break;
                 case "booking":
-
                   return (
                     <h3
                       style={{
@@ -183,11 +181,13 @@ const LeadsTable = (props) => {
                         marginBottom: "3px",
                       }}
                     >
-                      • {lead.f_created_date} | <b>Booked at</b> {lead.booked_at} <b>with</b> {lead.sales_rep} - {lead.setter} | <b>Status:</b> {lead.status}
+                      • {lead.f_created_date} | <b>Booked at</b>{" "}
+                      {lead.booked_at} <b>with</b> {lead.sales_rep} -{" "}
+                      {lead.setter} | <b>Status:</b> {lead.status}
                     </h3>
-                  )
+                  );
 
-                  break
+                  break;
                 default:
                   break;
               }
