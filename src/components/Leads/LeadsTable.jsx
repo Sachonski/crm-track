@@ -28,7 +28,6 @@ const LeadsTable = (props) => {
     const newData = responseConType.sort(
       (a, b) => new Date(a.f_created_date) - new Date(b.f_created_date)
     );
-    console.log(newData)
     setSelectedLead(newData);
   }
 
@@ -102,10 +101,15 @@ const LeadsTable = (props) => {
 
   const handleInfoClick = (lead) => {
     // Handle +Info button click
-    setSelectedLeadName(lead)
-      setSelectedLead([])
-      setter(lead)
-      .then(setPopupVisible(true))
+    setSelectedLeadName(prev =>{
+      if(prev.contact_id !== lead.contact_id){
+        setSelectedLead([])
+        setter(lead)
+        .then(setPopupVisible(true))
+      }
+      return lead
+    })
+
       
 
   };
