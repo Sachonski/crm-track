@@ -5,10 +5,20 @@ import "react-datepicker/dist/react-datepicker.css";
 const LeadsTable = (props) => {
   const [popupVisible, setPopupVisible] = useState(false);
   const [selectedLead, setSelectedLead] = useState([]);
+  const [selectedLeadName, setSelectedLeadName] = useState("")
 
-  async function setter(querySearch) {
-    setSelectedLead(await props.fetchQuery(querySearch));
+  async function setter(querySearch,type) {
+    const response = await props.fetchQuery(querySearch)
+
+    const responseConType = response.map(obj => ({ ...obj, type }));
+    console.log(responseConType)
+
+    setSelectedLead(prevData =>[...prevData,...responseConType]);
+
+    console.log(selectedLead)
   }
+
+
 
   const columns = useMemo(
     () => [
@@ -78,18 +88,16 @@ const LeadsTable = (props) => {
 
   const handleInfoClick = (lead) => {
     // Handle +Info button click
-
+    setSelectedLead([])
+    setSelectedLeadName(lead.full_name)
     const querySearch ="SELECT c.email AS contact_email, c.full_name AS contact_full_name, c.phone, c.sales_rep AS contact_sales_rep, c.fk_sorfware_id, MAX(DATE_FORMAT(c.created_date, '%Y-%m-%d %H:%i')) AS contact_created_date, c.utm_source, (SELECT full_name FROM Bookings WHERE email = c.email LIMIT 1) AS booking_full_name, (SELECT setter FROM Bookings WHERE email = c.email LIMIT 1) AS booking_setter, (SELECT sales_rep FROM Bookings WHERE email = c.email LIMIT 1) AS booking_sales_rep, (SELECT created_at FROM Bookings WHERE email = c.email LIMIT 1) AS booking_created_at, (SELECT booked_at FROM Bookings WHERE email = c.email LIMIT 1) AS booking_booked_at, (SELECT status FROM Bookings WHERE email = c.email LIMIT 1) AS booking_status, (SELECT payment_amount FROM Payments WHERE fk_contact = c.id LIMIT 1) AS payment_amount, (SELECT product_name FROM Payments WHERE fk_contact = c.id LIMIT 1) AS payment_product_name, (SELECT product_description FROM Payments WHERE fk_contact = c.id LIMIT 1) AS payment_product_description, (SELECT subscription_id FROM Payments WHERE fk_contact = c.id LIMIT 1) AS payment_subscription_id, (SELECT payment_date FROM Payments WHERE fk_contact = c.id LIMIT 1) AS payment_date, (SELECT software_description FROM Softwares WHERE id = c.fk_sorfware_id LIMIT 1) AS software_description, (SELECT funnel_id FROM Softwares WHERE id = c.fk_sorfware_id LIMIT 1) AS software_funnel_id, (SELECT step_id FROM Softwares WHERE id = c.fk_sorfware_id LIMIT 1) AS software_step_id, (SELECT funnel_name FROM Softwares WHERE id = c.fk_sorfware_id LIMIT 1) AS software_funnel_name, (SELECT step_name FROM Softwares WHERE id = c.fk_sorfware_id LIMIT 1) AS software_step_name FROM Contacts c WHERE c.email = '"+ lead.email + "' GROUP BY c.email, c.fk_sorfware_id, DATE_FORMAT(c.created_date, '%Y-%m-%d %H:%i');";
-  
-    setter(querySearch)
+    const bookingQuery = `SELECT *,DATE_FORMAT(created_at, '%Y-%m-%d %H:%i') as f_created_date,DATE_FORMAT(booked_at, '%Y-%m-%d %H:%i') as booked_at FROM Bookings WHERE Email = '${lead.email}' AND Status != 'canceled'`
+    const contactQuery = `SELECT Contacts.*, DATE_FORMAT(Contacts.created_date, '%Y-%m-%d %H:%i') AS f_created_date, Softwares.* FROM Contacts LEFT JOIN Payments ON Contacts.id = Payments.fk_contact LEFT JOIN Softwares ON Contacts.fk_sorfware_id = Softwares.id WHERE Contacts.email = '${lead.email}' AND Payments.fk_contact IS NULL AND Contacts.fk_sorfware_id IS NOT NULL AND Contacts.fk_bookings IS NULL`;
+    const paymentQuery = `SELECT Payments.*, COALESCE(DATE_FORMAT(Payments.first_payment_date, '%Y-%m-%d %H:%i'), DATE_FORMAT(Payments.payment_date, '%Y-%m-%d %H:%i')) AS f_created_date, Softwares.funnel_id, Softwares.step_id, Softwares.funnel_name, Softwares.step_name FROM Payments INNER JOIN Contacts ON Payments.fk_contact = Contacts.id LEFT JOIN Softwares ON Payments.fk_software = Softwares.id WHERE Contacts.email = '${lead.email}'`;
+    setter(bookingQuery,"booking")
+    setter(contactQuery,"contact")
+    setter(paymentQuery,"payment")
       .then(setPopupVisible(true))
-      .then(function () {
-        console.log(querySearch)
-        console.log("aca viene el selectedLead");
-        console.log(selectedLead);
-      });
-
-    //setSelectedLead(lead);
     setPopupVisible(true);
   };
 
@@ -114,11 +122,11 @@ const LeadsTable = (props) => {
 
             <h3>
               Journey details for{" "}
-              {selectedLead[0] ? selectedLead[0].contact_full_name : ""}
+              {selectedLeadName}
             </h3>
             {selectedLead.map((lead) => {
-              switch (true) {
-                case lead.payment_amount != null:
+              switch (lead.type) {
+                case "payment":
                   return (
                     <h3
                       style={{
@@ -128,13 +136,13 @@ const LeadsTable = (props) => {
                         marginLeft: "20px",
                       }}
                     >
-                      • {lead.payment_date} | Payment: ${lead.payment_amount} |
-                      Product: {lead.product_name} Funnel: {lead.funnel_name} |
-                      Step: {lead.step_name}
+                      • {lead.f_created_date} | <b>Payment:</b> ${lead.payment_amount} |
+                      <b> Product:</b> {lead.product_name} | <b>Funnel:</b> {lead.funnel_name} |
+                      <b> Step:</b> {lead.step_name}
                     </h3>
                   );
                   break;
-                case lead.funnel_name != null && lead.payment_amount == null && lead.booking_created_at == null:
+                case "contact":
                   return (
                     <h3
                       style={{
@@ -143,12 +151,12 @@ const LeadsTable = (props) => {
                         marginLeft: "20px",
                       }}
                     >
-                      • {lead.contact_created_date} | Funnel: {lead.funnel_name}{" "}
-                      | Step: {lead.step_name}
+                      • {lead.f_created_date} | <b>Funnel:</b> {lead.funnel_name}{" "}
+                      | <b>Step:</b> {lead.step_name}
                     </h3>
                   );
                   break;
-                  case lead.booking_created_at != null:
+                  case "booking":
 
                     return(
                       <h3
@@ -159,7 +167,7 @@ const LeadsTable = (props) => {
                         marginLeft: "20px",
                       }}
                     >
-                      • {lead.contact_created_date} | Booked at {lead.booked_at} with {lead.booking_sales_rep} - {lead.setter} | Status: {lead.booking_status}
+                      • {lead.f_created_date} | <b>Booked at</b> {lead.booked_at} with {lead.sales_rep} - {lead.setter} | <b>Status:</b> {lead.status}
                     </h3>
                     )
 
