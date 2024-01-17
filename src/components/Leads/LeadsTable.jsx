@@ -167,7 +167,7 @@ const LeadsTable = (props) => {
                         marginLeft: "20px",
                       }}
                     >
-                      • {lead.f_created_date} | <b>Booked at</b> {lead.booked_at} with {lead.sales_rep} - {lead.setter} | <b>Status:</b> {lead.status}
+                      • {lead.f_created_date} | <b>Booked at</b> {lead.booked_at} <b>with</b> {lead.sales_rep} - {lead.setter} | <b>Status:</b> {lead.status}
                     </h3>
                     )
 
