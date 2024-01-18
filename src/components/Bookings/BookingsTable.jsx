@@ -39,9 +39,10 @@ const BookingsTable = (props) => {
       { Header: "Email", accessor: "email" },
       { Header: "Setter", accessor: "setter" },
       { Header: "Sales Rep", accessor: "sales_rep" },
+      { Header: "TimeZone", accessor: "timezone" },
       { Header: "Booking Date", accessor: "booked_at" },
       { Header: "Booking Status", accessor: "status" },
-      { Header: "Origin Source", accessor: "utm_source" },
+      { Header: "Booking Source", accessor: "utm_source" },
       // Add a column for the View More label
 
       // Add a column for the +Info button
