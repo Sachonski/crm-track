@@ -27,13 +27,15 @@ const BookingsSearch = () => {
   const [data, setData] = useState([]);
 
   const originalDate = new Date(startDate);
+  const originalDateLess12 = new Date();
+  originalDateLess12.setHours(originalDate.getHours() - 12);
   const formattedDateStart = `${originalDate.getFullYear()}-${(originalDate.getMonth() + 1).toString().padStart(2, '0')}-${originalDate.getDate().toString().padStart(2, '0')} ${originalDate.getHours().toString().padStart(2, '0')}:${originalDate.getMinutes().toString().padStart(2, '0')}:${originalDate.getSeconds().toString().padStart(2, '0')}`;
 
 
   const originalDateEnd = new Date(endDate);
   const formattedDateEnd = `${originalDateEnd.getFullYear()}-${(originalDateEnd.getMonth() + 1).toString().padStart(2, '0')}-${originalDateEnd.getDate().toString().padStart(2, '0')} ${originalDateEnd.getHours().toString().padStart(2, '0')}:${originalDateEnd.getMinutes().toString().padStart(2, '0')}:${originalDateEnd.getSeconds().toString().padStart(2, '0')}`;
 
-  const querySearch = `SELECT DISTINCT *, CASE WHEN setter = 'I acknowledge this and promise' THEN NULL ELSE setter END AS setter, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i') AS created_date, DATE_FORMAT(booked_at, '%Y-%m-%d %H:%i') AS booked_at, CASE WHEN utm_source = 'null' THEN NULL ELSE utm_source END AS utm_source, CASE WHEN booked_at < '${originalDate}' THEN 'completed' ELSE status END AS status FROM Bookings WHERE created_at BETWEEN '${formattedDateStart}' AND '${formattedDateEnd}' AND (full_name LIKE '%${searchTerm}%' OR email LIKE '%${searchTerm}%') AND status != 'canceled' ORDER BY created_at DESC`;
+  const querySearch = `SELECT DISTINCT *, CASE WHEN setter = 'I acknowledge this and promise' THEN NULL ELSE setter END AS setter, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i') AS created_date, DATE_FORMAT(booked_at, '%Y-%m-%d %H:%i') AS booked_at, CASE WHEN utm_source = 'null' THEN NULL ELSE utm_source END AS utm_source, CASE WHEN booked_at < '${originalDateLess12}' THEN 'completed' ELSE status END AS status FROM Bookings WHERE created_at BETWEEN '${formattedDateStart}' AND '${formattedDateEnd}' AND (full_name LIKE '%${searchTerm}%' OR email LIKE '%${searchTerm}%') AND status != 'canceled' ORDER BY created_at DESC`;
 
   const fetchQuery = async (query) => {
     const res = await axios.post('http://localhost:3001/', {
