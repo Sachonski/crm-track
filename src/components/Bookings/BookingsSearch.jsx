@@ -127,7 +127,7 @@ const BookingsSearch = () => {
           </Card>
         </Col>
       </Row>
-      {<BookingsTable dataList={data} fetchQuery={fetchQuery} />}
+      {<BookingsTable dataList={data} fetchQuery={fetchQuery} formattedDate={formattedDate}/>}
     </div>
   );
 };

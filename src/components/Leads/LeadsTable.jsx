@@ -8,7 +8,9 @@ const LeadsTable = (props) => {
   const [selectedLeadName, setSelectedLeadName] = useState({ full_name: "" });
 
   async function setter(lead) {
-    const bookingQuery = `SELECT *, 'booking' AS type, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i') as f_created_date, DATE_FORMAT(booked_at, '%Y-%m-%d %H:%i') as booked_at, CASE WHEN setter = 'I acknowledge this and promise' THEN NULL ELSE setter END AS setter FROM Bookings WHERE Email = '${lead.email}' AND Status != 'canceled';`;
+
+
+    const bookingQuery = `SELECT *, 'booking' AS type, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i') as f_created_date, DATE_FORMAT(booked_at, '%Y-%m-%d %H:%i') as booked_at, CASE WHEN setter = 'I acknowledge this and promise' THEN NULL ELSE setter END AS setter,CASE WHEN booked_at < '${props.formattedDate}' THEN 'completed' ELSE status END AS status FROM Bookings WHERE Email = '${lead.email}' AND Status != 'canceled';`;
     const contactQuery = `SELECT DISTINCT Contacts.*, 'contact' AS type, DATE_FORMAT(Contacts.created_date, '%Y-%m-%d %H:%i') AS f_created_date, Softwares.* FROM Contacts LEFT JOIN Payments ON Contacts.id = Payments.fk_contact LEFT JOIN Softwares ON Contacts.fk_sorfware_id = Softwares.id WHERE Contacts.email = '${lead.email}' AND Payments.fk_contact IS NULL AND Contacts.fk_sorfware_id IS NOT NULL AND Contacts.fk_bookings IS NULL GROUP BY Contacts.created_date, Contacts.fk_sorfware_id;`;
     const paymentQuery = `SELECT Payments.*,'payment' AS type,COALESCE(DATE_FORMAT(Payments.first_payment_date, '%Y-%m-%d %H:%i'), DATE_FORMAT(Payments.payment_date, '%Y-%m-%d %H:%i')) AS f_created_date, Softwares.funnel_id, Softwares.step_id, Softwares.funnel_name, Softwares.step_name FROM Payments INNER JOIN Contacts ON Payments.fk_contact = Contacts.id LEFT JOIN Softwares ON Payments.fk_software = Softwares.id WHERE Contacts.email = '${lead.email}'`;
 

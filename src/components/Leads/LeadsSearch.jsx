@@ -28,7 +28,9 @@ const LeadsSearch = () => {
 
   const originalDate = new Date(startDate);
   const formattedDateStart = `${originalDate.getFullYear()}-${(originalDate.getMonth() + 1).toString().padStart(2, '0')}-${originalDate.getDate().toString().padStart(2, '0')} ${originalDate.getHours().toString().padStart(2, '0')}:${originalDate.getMinutes().toString().padStart(2, '0')}:${originalDate.getSeconds().toString().padStart(2, '0')}`;
-
+  const originalDateLess12 = new Date();
+  originalDateLess12.setHours(originalDate.getHours() - 12)
+  const formattedDate = originalDateLess12.toISOString().slice(0, 16).replace("T", " ");
 
   const originalDateEnd = new Date(endDate);
   const formattedDateEnd = `${originalDateEnd.getFullYear()}-${(originalDateEnd.getMonth() + 1).toString().padStart(2, '0')}-${originalDateEnd.getDate().toString().padStart(2, '0')} ${originalDateEnd.getHours().toString().padStart(2, '0')}:${originalDateEnd.getMinutes().toString().padStart(2, '0')}:${originalDateEnd.getSeconds().toString().padStart(2, '0')}`;
@@ -124,7 +126,7 @@ const LeadsSearch = () => {
           </Card>
         </Col>
       </Row>
-      {<LeadsTable dataList={data} fetchQuery={fetchQuery} />}
+      {<LeadsTable dataList={data} fetchQuery={fetchQuery} formattedDate={formattedDate}/>}
     </div>
   );
 };
