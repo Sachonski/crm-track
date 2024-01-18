@@ -57,7 +57,7 @@ const BookingsTable = (props) => {
                 cursor: "pointer",
               }}
             >
-              <option value="Show"></option>
+              <option value="Empty"></option>
               <option value="Show">Show</option>
               <option value="No Show">No Show</option>
               <option value="Sold">Sold</option>
