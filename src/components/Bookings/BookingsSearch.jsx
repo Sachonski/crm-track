@@ -33,10 +33,9 @@ const BookingsSearch = () => {
   const originalDateEnd = new Date(endDate);
   const formattedDateEnd = `${originalDateEnd.getFullYear()}-${(originalDateEnd.getMonth() + 1).toString().padStart(2, '0')}-${originalDateEnd.getDate().toString().padStart(2, '0')} ${originalDateEnd.getHours().toString().padStart(2, '0')}:${originalDateEnd.getMinutes().toString().padStart(2, '0')}:${originalDateEnd.getSeconds().toString().padStart(2, '0')}`;
 
-  const querySearch = "SELECT DISTINCT *, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i') AS created_date FROM Bookings WHERE created_at BETWEEN '" + formattedDateStart.toString() + "' AND '" + formattedDateEnd.toString() + "' AND (full_name LIKE '%" + searchTerm + "%' OR email LIKE '%" + searchTerm +"%') AND status != 'canceled' ORDER BY created_at DESC"
+  const querySearch = "SELECT DISTINCT *,CASE WHEN setter = 'I acknowledge this and promise' THEN NULL ELSE setter END AS setter, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i') AS created_date,DATE_FORMAT(booked_at, '%Y-%m-%d %H:%i') AS booked_at,CASE WHEN utm_source = 'null' THEN NULL ELSE utm_source END AS utm_source FROM Bookings WHERE created_at BETWEEN '" + formattedDateStart.toString() + "' AND '" + formattedDateEnd.toString() + "' AND (full_name LIKE '%" + searchTerm + "%' OR email LIKE '%" + searchTerm +"%') AND status != 'canceled' ORDER BY created_at DESC"
 
   const fetchQuery = async (query) => {
-    console.log(query)
     const res = await axios.post('http://localhost:3001/', {
       query: query,
     });
