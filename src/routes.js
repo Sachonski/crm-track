@@ -38,7 +38,7 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/icons",
+    path: "/leads",
     name: "Leads",
     rtlName: "الرموز",
     icon: "tim-icons icon-tag",
@@ -46,7 +46,7 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/map",
+    path: "/bookings",
     name: "Bookings",
     rtlName: "خرائط",
     icon:"tim-icons icon-calendar-60",
@@ -54,7 +54,7 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/notifications",
+    path: "/sales",
     name: "Sales",
     rtlName: "إخطارات",
     icon: "tim-icons icon-money-coins",
@@ -63,7 +63,7 @@ var routes = [
   },
 
   {
-    path: "/Funnels",
+    path: "/funnels",
     name: "Funnels",
     rtlName: "إخطارات",
     icon: "tim-icons icon-tablet-2",
