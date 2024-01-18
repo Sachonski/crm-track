@@ -28,7 +28,7 @@ const BookingsTable = (props) => {
     const newData = responseConType.sort(
       (a, b) => new Date(a.f_created_date) - new Date(b.f_created_date)
     );
-    console.log(newData)
+    console.log(newData);
     setSelectedLead(newData);
   }
 
@@ -99,7 +99,7 @@ const BookingsTable = (props) => {
   };
 
   const handleInfoClick = (lead) => {
-    console.log("entrando aca?")
+    console.log("entrando aca?");
     // Handle +Info button click
     setSelectedLeadName((prev) => {
       if (prev.id !== lead.id) {
@@ -239,7 +239,11 @@ const BookingsTable = (props) => {
                       borderRight: "1px solid #525F7F",
                       color: "#c4c4c4",
                       textTransform:
-                        cell.column.id === "full_name" ? "capitalize" : "none",
+                        cell.column.id === "full_name"
+                          ? "capitalize"
+                          : cell.column.id === "status"
+                          ? "capitalize"
+                          : "none",
                     }}
                   >
                     {cell.render("Cell")}
