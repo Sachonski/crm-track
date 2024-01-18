@@ -56,6 +56,7 @@ const LeadsTable = (props) => {
               color: "#c4c4c4",
               padding: "0 4px 0px 4px",
               cursor: "pointer",
+              borderRadius: "4px",
             }}
           >
             +Info

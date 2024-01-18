@@ -55,6 +55,7 @@ const BookingsTable = (props) => {
                 color: "white",
                 padding: "0 4px 0px 4px",
                 cursor: "pointer",
+                borderRadius: "4px",
               }}
               onChange={(e) => bookingOutcomeChange(row.original,e.target.value)}
               defaultValue={row.original.booking_outcome}
@@ -81,6 +82,7 @@ const BookingsTable = (props) => {
               color: "#c4c4c4",
               padding: "0 4px 0px 4px",
               cursor: "pointer",
+              borderRadius: "4px",
             }}
           >
             +Info
