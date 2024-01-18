@@ -47,7 +47,7 @@ const BookingsTable = (props) => {
         Header: "Booking Outcome",
         accessor: "booking_outcome",
         Cell: ({ row }) => (
-          <dropdown onClick={() => handleInfoClick(row.original)}>
+          <dropdown >
             <select
               style={{
                 border: "1px solid #525F7F",
@@ -56,6 +56,8 @@ const BookingsTable = (props) => {
                 padding: "0 4px 0px 4px",
                 cursor: "pointer",
               }}
+              onChange={(e) => bookingOutcomeChange(row.original,e.target.value)}
+              defaultValue={row.original.booking_outcome}
             >
               <option value="Empty"></option>
               <option value="Show">Show</option>
@@ -120,8 +122,22 @@ const BookingsTable = (props) => {
     console.log("View More button clicked");
   };
 
+const bookingOutcomeChange = (lead,value) => {
+  console.log("aca viene el value",value)
+  console.log("aca viene el lead id",lead.id)
+  const updateQuery = `UPDATE Bookings SET booking_outcome = '${value}' WHERE id = ${lead.id !== 'Empty'?lead.id : null};`;
+
+  props.fetchQuery(updateQuery)
+
+
+
+
+}
+
+
+
+
   const handleInfoClick = (lead) => {
-    console.log("entrando aca?");
     // Handle +Info button click
     setSelectedLeadName((prev) => {
       if (prev.id !== lead.id) {
