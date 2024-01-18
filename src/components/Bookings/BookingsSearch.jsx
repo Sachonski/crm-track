@@ -105,8 +105,7 @@ const BookingsSearch = () => {
                     />
                   </FormGroup>
                 </Col>
-              </Row>
-              <Row>
+              
                 <Col md="4">
                   <FormGroup>
                     <Label for="search">Search:</Label>
