@@ -19,6 +19,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoney, faUser } from '@fortawesome/free-solid-svg-icons';
 import Dashboard from "views/Dashboard.js";
 import LeadView from "views/LeadView.js";
+import BookingView from 'views/BookingView';
 import Map from "views/Map.js";
 import Notifications from "views/Notifications.js";
 import Rtl from "views/Rtl.js";
@@ -49,7 +50,7 @@ var routes = [
     name: "Bookings",
     rtlName: "خرائط",
     icon:"tim-icons icon-calendar-60",
-    component: <Map />,
+    component: <BookingView />,
     layout: "/admin",
   },
   {
