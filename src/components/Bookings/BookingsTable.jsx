@@ -43,10 +43,30 @@ const BookingsTable = (props) => {
       { Header: "Booking Date", accessor: "booked_at" },
       { Header: "Booking Status", accessor: "status" },
       { Header: "Booking Source", accessor: "utm_source" },
-      { Header: "Booking Outcome", accessor: "booking_outcome" },
-      // Add a column for the View More label
-
-      // Add a column for the +Info button
+      {
+        Header: "Booking Outcome",
+        accessor: "booking_outcome",
+        Cell: ({ row }) => (
+          <dropdown onClick={() => handleInfoClick(row.original)}>
+            <select
+              style={{
+                border: "1px solid #525F7F",
+                background: "rgba(82, 95, 127, 0.5)",
+                color: "white",
+                padding: "0 4px 0px 4px",
+                cursor: "pointer",
+              }}
+            >
+              <option value="Show"></option>
+              <option value="Show">Show</option>
+              <option value="No Show">No Show</option>
+              <option value="Sold">Sold</option>
+              <option value="Rescheduled">Rescheduled</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </dropdown>
+        ),
+      },
       {
         Header: "Details",
         accessor: "+ info",
