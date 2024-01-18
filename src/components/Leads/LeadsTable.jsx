@@ -30,6 +30,7 @@ const LeadsTable = (props) => {
     const newData = responseConType.sort(
       (a, b) => new Date(a.f_created_date) - new Date(b.f_created_date)
     );
+    console.log("la new data",newData)
     setSelectedLead(newData);
   }
 
@@ -184,7 +185,7 @@ const LeadsTable = (props) => {
                         marginBottom: "3px",
                       }}
                     >
-                      • {lead.f_created_date} | <b>Booked at</b> {lead.booked_at} <b>with</b> {lead.sales_rep} - {lead.setter} | <b>Status:</b> {lead.status} {lead.booking_outcome !== 'Empty' ?<span>| <b>Booking outcome:</b>  {lead.booking_outcome} </span> : ""}
+                      • {lead.f_created_date} | <b>Booked at</b> {lead.booked_at} <b>with</b> {lead.sales_rep} - {lead.setter} | <b>Status:</b> {lead.status} {lead.booking_outcome !== '' && lead.booking_outcome !== null ?<span>| <b>Booking outcome:</b>  {lead.booking_outcome} </span> : ""}
                     </h3>
                   );
 
