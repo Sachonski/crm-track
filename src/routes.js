@@ -26,6 +26,7 @@ import TableList from "views/TableList.js";
 import Typography from "views/Typography.js";
 import UserProfile from "views/UserProfile.js";
 
+
 var routes = [
   {
     path: "/dashboard",
@@ -39,7 +40,7 @@ var routes = [
     path: "/icons",
     name: "Leads",
     rtlName: "الرموز",
-    icon: "tim-icons icon-pin",
+    icon: "tim-icons icon-tag",
     component: <LeadView />,
     layout: "/admin",
   },
@@ -47,7 +48,7 @@ var routes = [
     path: "/map",
     name: "Bookings",
     rtlName: "خرائط",
-    icon:"tim-icons icon-pin",
+    icon:"tim-icons icon-calendar-60",
     component: <Map />,
     layout: "/admin",
   },
@@ -55,7 +56,7 @@ var routes = [
     path: "/notifications",
     name: "Sales",
     rtlName: "إخطارات",
-    icon: "tim-icons icon-pin",
+    icon: "tim-icons icon-money-coins",
     component: <Notifications />,
     layout: "/admin",
   },
@@ -64,7 +65,7 @@ var routes = [
     path: "/Funnels",
     name: "Funnels",
     rtlName: "إخطارات",
-    icon: "tim-icons icon-pin",
+    icon: "tim-icons icon-tablet-2",
     component: <Typography />,
     layout: "/admin",
   },
