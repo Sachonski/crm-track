@@ -28,6 +28,7 @@ const BookingsTable = (props) => {
     const newData = responseConType.sort(
       (a, b) => new Date(a.f_created_date) - new Date(b.f_created_date)
     );
+    console.log(newData)
     setSelectedLead(newData);
   }
 
@@ -100,9 +101,10 @@ const BookingsTable = (props) => {
   };
 
   const handleInfoClick = (lead) => {
+    console.log("entrando aca?")
     // Handle +Info button click
     setSelectedLeadName((prev) => {
-      if (prev.contact_id !== lead.contact_id) {
+      if (prev.id !== lead.id) {
         setSelectedLead([]);
         setter(lead).then(setPopupVisible(true));
       }

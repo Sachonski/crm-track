@@ -33,13 +33,14 @@ const BookingsSearch = () => {
   const originalDateEnd = new Date(endDate);
   const formattedDateEnd = `${originalDateEnd.getFullYear()}-${(originalDateEnd.getMonth() + 1).toString().padStart(2, '0')}-${originalDateEnd.getDate().toString().padStart(2, '0')} ${originalDateEnd.getHours().toString().padStart(2, '0')}:${originalDateEnd.getMinutes().toString().padStart(2, '0')}:${originalDateEnd.getSeconds().toString().padStart(2, '0')}`;
 
-  const querySearch = "SELECT c.id AS contact_id,  c.full_name,  c.email,  c.sales_rep, c.phone, DATE_FORMAT(c.created_date, '%Y-%m-%d %H:%i') AS created_date, CONCAT('$', FORMAT(COALESCE(SUM(p.payment_amount), NULL), 2)) AS sales,  CASE WHEN MIN(c.utm_source) <> 'null' THEN MIN(c.utm_source) END AS lastSource,  CASE WHEN MAX(c.utm_source) <> 'null' THEN MAX(c.utm_source) ELSE CASE WHEN MIN(c.utm_source) <> 'null' THEN MIN(c.utm_source) END END AS utm_source FROM  Contacts c LEFT JOIN  Payments p ON c.id = p.fk_contact WHERE c.created_date BETWEEN '" + formattedDateStart.toString() + "' AND '" + formattedDateEnd.toString() + "'     AND (c.full_name LIKE '%" + searchTerm + "%' OR c.email LIKE '%" + searchTerm + "%' OR c.phone LIKE '%" + searchTerm + "%') GROUP BY  c.email ORDER BY c.created_date DESC"
+  const querySearch = "SELECT *, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i') AS created_date FROM Bookings WHERE created_at BETWEEN '" + formattedDateStart.toString() + "' AND '" + formattedDateEnd.toString() + "' AND (full_name LIKE '%" + searchTerm + "%' OR email LIKE '%" + searchTerm +"%') AND status != 'canceled' ORDER BY created_at DESC"
 
   const fetchQuery = async (query) => {
-
+    console.log(query)
     const res = await axios.post('http://localhost:3001/', {
       query: query,
     });
+    console.log(res)
     if (res.data[0]) {
       return res.data
     } else {
