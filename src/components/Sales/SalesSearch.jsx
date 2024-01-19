@@ -70,18 +70,8 @@ const SalesSearch = () => {
     .toString()
     .padStart(2, "0")}`;
 
-  const querySearch =
-    "SELECT c.id AS contact_id,  c.full_name,  c.email,  c.sales_rep, c.phone, DATE_FORMAT(c.created_date, '%Y-%m-%d %H:%i') AS created_date, CONCAT('$', FORMAT(COALESCE(SUM(p.payment_amount), NULL), 2)) AS sales,  CASE WHEN MIN(c.utm_source) <> 'null' THEN MIN(c.utm_source) END AS lastSource,  CASE WHEN MAX(c.utm_source) <> 'null' THEN MAX(c.utm_source) ELSE CASE WHEN MIN(c.utm_source) <> 'null' THEN MIN(c.utm_source) END END AS utm_source FROM  Contacts c LEFT JOIN  Payments p ON c.id = p.fk_contact WHERE c.created_date BETWEEN '" +
-    formattedDateStart.toString() +
-    "' AND '" +
-    formattedDateEnd.toString() +
-    "'     AND (c.full_name LIKE '%" +
-    searchTerm +
-    "%' OR c.email LIKE '%" +
-    searchTerm +
-    "%' OR c.phone LIKE '%" +
-    searchTerm +
-    "%') GROUP BY  c.email ORDER BY c.created_date DESC";
+    const querySearch = `SELECT p.*, c.*,p.id as id,p.sales_rep as sales_rep, CONCAT('$', FORMAT(p.payment_amount,2)) AS payment_amount, CASE WHEN c.utm_source <> 'null' THEN c.utm_source END AS utm_source,DATE_FORMAT(p.payment_date, '%Y-%m-%d %H:%i') AS payment_date FROM Payments p JOIN Contacts c ON p.fk_contact = c.id WHERE (p.payment_date >= '${formattedDateStart}' AND p.payment_date <= '${formattedDateEnd}') AND (c.full_name LIKE '%${searchTerm}%' OR c.email LIKE '%${searchTerm}%' OR c.phone LIKE '%${searchTerm}%' OR CAST(p.payment_amount AS CHAR) LIKE '%${searchTerm}%' OR p.product_name LIKE '%${searchTerm}%' OR c.sales_rep LIKE '%${searchTerm}%')`;
+
 
   const fetchQuery = async (query) => {
     const res = await axios.post("http://localhost:3001/", {

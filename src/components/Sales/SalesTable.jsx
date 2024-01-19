@@ -58,8 +58,8 @@ const SalesTable = (props) => {
                 borderRadius: "4px",
                 alignContent: "center",
               }}
-             // onChange={(e) => salesOutcomeChange(row.original,e.target.value)}
-              defaultValue={row.original.booking_outcome}
+              onChange={(e) => salesRepChange(row.original,e.target.value)}
+              defaultValue={row.original.sales_rep}
             >
               <option value="Empty"></option>
               <option value="Dean White">Dean White</option>
@@ -126,10 +126,25 @@ const SalesTable = (props) => {
     console.log("View More button clicked");
   };
 
+
+  const salesRepChange = (lead,value) => {
+    console.log("aca viene el value",value)
+    console.log("aca viene el lead id",lead.id)
+    console.log(lead)
+    if(lead.id){
+      console.log("aca va el fetch")
+    const updateQuery = `UPDATE Payments SET sales_rep = '${value}' WHERE id = ${lead.id};`;
+  
+    console.log(props.fetchQuery(updateQuery))
+
+    }
+  }
+
   const handleInfoClick = (lead) => {
     // Handle +Info button click
+    console.log(lead.id)
     setSelectedLeadName((prev) => {
-      if (prev.contact_id !== lead.contact_id) {
+      if (prev.id !== lead.id) {
         setSelectedLead([]);
         setter(lead).then(setPopupVisible(true));
       }
