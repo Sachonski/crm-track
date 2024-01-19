@@ -43,6 +43,32 @@ const SalesTable = (props) => {
       { Header: "Payment Amount", accessor: "payment_amount" },
       { Header: "Sales Source", accessor: "utm_source" },
       { Header: "Product Name", accessor: "product_name" },
+      {
+        Header: "Sales Rep",
+        accessor: "sales_rep",
+        Cell: ({ row }) => (
+          <dropdown >
+            <select
+              style={{
+                border: "1px solid #525F7F",
+                background: "rgba(82, 95, 127, 0.5)",
+                color: "white",
+                padding: "0 4px 0px 4px",
+                cursor: "pointer",
+                borderRadius: "4px",
+                alignContent: "center",
+              }}
+             // onChange={(e) => salesOutcomeChange(row.original,e.target.value)}
+              defaultValue={row.original.booking_outcome}
+            >
+              <option value="Empty"></option>
+              <option value="Dean White">Dean White</option>
+              <option value="Alex Gornick">Alex Gornick</option>
+              <option value="Kyle White">Kyle White</option>
+            </select>
+          </dropdown>
+        ),
+      },
       // Add a column for the View More label
 
       // Add a column for the +Info button
