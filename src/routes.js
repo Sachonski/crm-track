@@ -20,6 +20,7 @@ import { faMoney, faUser } from '@fortawesome/free-solid-svg-icons';
 import Dashboard from "views/Dashboard.js";
 import LeadView from "views/LeadView.js";
 import BookingView from 'views/BookingView';
+import SaleView from 'views/SaleView';
 import Map from "views/Map.js";
 import Notifications from "views/Notifications.js";
 import Rtl from "views/Rtl.js";
@@ -58,7 +59,7 @@ var routes = [
     name: "Sales",
     rtlName: "إخطارات",
     icon: "tim-icons icon-money-coins",
-    component: <Notifications />,
+    component: <SaleView />,
     layout: "/admin",
   },
 

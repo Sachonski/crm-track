@@ -12,12 +12,12 @@ import {
 } from "reactstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import LeadsTable from "./LeadsTable";
+import LeadsTable from "./SalesTable";
 import axios from "axios";
 import classNames from "classnames";
 import { Line, Bar } from "react-chartjs-2";
 
-const LeadsSearch = () => {
+const SalesSearch = () => {
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
   const [startDate, setStartDate] = useState(thirtyDaysAgo);
@@ -176,4 +176,4 @@ const LeadsSearch = () => {
   );
 };
 
-export default LeadsSearch;
+export default SalesSearch;
