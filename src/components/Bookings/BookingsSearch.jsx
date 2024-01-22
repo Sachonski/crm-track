@@ -39,7 +39,7 @@ const BookingsSearch = () => {
   const querySearch = `SELECT DISTINCT *, CASE WHEN setter = 'I acknowledge this and promise' THEN NULL ELSE setter END AS setter, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i') AS created_date, DATE_FORMAT(booked_at, '%Y-%m-%d %H:%i') AS booked_at, CASE WHEN utm_source = 'null' THEN NULL ELSE utm_source END AS utm_source, CASE WHEN booked_at < '${formattedDate}' THEN 'completed' ELSE status END AS status FROM Bookings WHERE created_at BETWEEN '${formattedDateStart}' AND '${formattedDateEnd}' AND (full_name LIKE '%${searchTerm}%' OR email LIKE '%${searchTerm}%') AND status != 'canceled' ORDER BY created_at DESC`;
 
   const fetchQuery = async (query) => {
-    const res = await axios.post('http://localhost:3001/', {
+    const res = await axios.post("https://backend-server-db-4e7fb706df42.herokuapp.com/", {
       query: query,
     });
     console.log(res)
