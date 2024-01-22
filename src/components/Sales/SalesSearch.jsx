@@ -75,7 +75,7 @@ const SalesSearch = () => {
 
 
   const fetchQuery = async (query) => {
-    const res = await axios.post("http://localhost:3001/", {
+    const res = await axios.post("https://backend-server-db-4e7fb706df42.herokuapp.com/", {
       query: query,
     });
     if (res.data[0]) {
