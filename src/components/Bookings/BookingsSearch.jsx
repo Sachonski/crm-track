@@ -13,7 +13,7 @@ import {
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import BookingsTable from './BookingsTable'
-import axios from 'axios'
+import fetchQuery from 'dbFunctions/dbFunctions';
 
 
 const BookingsSearch = () => {
@@ -38,17 +38,7 @@ const BookingsSearch = () => {
 
   const querySearch = `SELECT DISTINCT *, CASE WHEN setter = 'I acknowledge this and promise' THEN NULL ELSE setter END AS setter, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i') AS created_date, DATE_FORMAT(booked_at, '%Y-%m-%d %H:%i') AS booked_at, CASE WHEN utm_source = 'null' THEN NULL ELSE utm_source END AS utm_source, CASE WHEN booked_at < '${formattedDate}' THEN 'completed' ELSE status END AS status FROM Bookings WHERE created_at BETWEEN '${formattedDateStart}' AND '${formattedDateEnd}' AND (full_name LIKE '%${searchTerm}%' OR email LIKE '%${searchTerm}%') AND status != 'canceled' ORDER BY created_at DESC`;
 
-  const fetchQuery = async (query) => {
-    const res = await axios.post("https://backend-server-db-4e7fb706df42.herokuapp.com/", {
-      query: query,
-    });
-    console.log(res)
-    if (res.data[0]) {
-      return res.data
-    } else {
-      return []
-    }
-  };
+  
 
   async function setter() {
     setData(await fetchQuery(querySearch))

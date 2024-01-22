@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useTable, usePagination } from "react-table";
 import "react-datepicker/dist/react-datepicker.css";
+import fetchQuery from 'dbFunctions/dbFunctions';
 
 const SalesTable = (props) => {
   const [popupVisible, setPopupVisible] = useState(false);
@@ -15,9 +16,9 @@ const SalesTable = (props) => {
     const paymentQuery = `SELECT Payments.*,'payment' AS type,COALESCE(DATE_FORMAT(Payments.first_payment_date, '%Y-%m-%d %H:%i'), DATE_FORMAT(Payments.payment_date, '%Y-%m-%d %H:%i')) AS f_created_date, Softwares.funnel_id, Softwares.step_id, Softwares.funnel_name, Softwares.step_name FROM Payments INNER JOIN Contacts ON Payments.fk_contact = Contacts.id LEFT JOIN Softwares ON Payments.fk_software = Softwares.id WHERE Contacts.email = '${lead.email}'`;
 
     const response = await Promise.all([
-      props.fetchQuery(bookingQuery),
-      props.fetchQuery(contactQuery),
-      props.fetchQuery(paymentQuery),
+      fetchQuery(bookingQuery),
+      fetchQuery(contactQuery),
+      fetchQuery(paymentQuery),
     ]);
 
     const responseConType = response.flatMap((results, index) => {
@@ -118,25 +119,19 @@ const SalesTable = (props) => {
 
   const handleRowClick = (row) => {
     // Handle row click, for example, you can redirect to a details page
-    console.log("Row clicked:", row.original);
+   // console.log("Row clicked:", row.original);
   };
 
   const handleViewMoreClick = () => {
     // Handle View More button click, for example, you can implement the logic for the button
-    console.log("View More button clicked");
+   // console.log("View More button clicked");
   };
 
 
   const salesRepChange = (lead,value) => {
-    console.log("aca viene el value",value)
-    console.log("aca viene el lead id",lead.id)
-    console.log(lead)
     if(lead.id){
-      console.log("aca va el fetch")
     const updateQuery = `UPDATE Payments SET sales_rep = '${value}' WHERE id = ${lead.id};`;
-  
-    console.log(props.fetchQuery(updateQuery))
-
+    fetchQuery(updateQuery)
     }
   }
 

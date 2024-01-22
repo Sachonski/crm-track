@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useTable, usePagination } from "react-table";
 import "react-datepicker/dist/react-datepicker.css";
+import fetchQuery from 'dbFunctions/dbFunctions';
 
 const LeadsTable = (props) => {
   const [popupVisible, setPopupVisible] = useState(false);
@@ -15,9 +16,9 @@ const LeadsTable = (props) => {
     const paymentQuery = `SELECT Payments.*,'payment' AS type,COALESCE(DATE_FORMAT(Payments.first_payment_date, '%Y-%m-%d %H:%i'), DATE_FORMAT(Payments.payment_date, '%Y-%m-%d %H:%i')) AS f_created_date, Softwares.funnel_id, Softwares.step_id, Softwares.funnel_name, Softwares.step_name FROM Payments INNER JOIN Contacts ON Payments.fk_contact = Contacts.id LEFT JOIN Softwares ON Payments.fk_software = Softwares.id WHERE Contacts.email = '${lead.email}'`;
 
     const response = await Promise.all([
-      props.fetchQuery(bookingQuery),
-      props.fetchQuery(contactQuery),
-      props.fetchQuery(paymentQuery),
+      fetchQuery(bookingQuery),
+      fetchQuery(contactQuery),
+      fetchQuery(paymentQuery),
     ]);
 
     const responseConType = response.flatMap((results, index) => {

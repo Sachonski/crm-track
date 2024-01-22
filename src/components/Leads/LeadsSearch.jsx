@@ -13,7 +13,7 @@ import {
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import LeadsTable from "./LeadsTable";
-import axios from "axios";
+import fetchQuery from 'dbFunctions/dbFunctions';
 import classNames from "classnames";
 import { Line, Bar } from "react-chartjs-2";
 
@@ -83,16 +83,6 @@ const LeadsSearch = () => {
     searchTerm +
     "%') GROUP BY  c.email ORDER BY c.created_date DESC";
 
-  const fetchQuery = async (query) => {
-    const res = await axios.post("https://backend-server-db-4e7fb706df42.herokuapp.com/", {
-      query: query,
-    });
-    if (res.data[0]) {
-      return res.data;
-    } else {
-      return [];
-    }
-  };
 
   async function setter() {
     setData(await fetchQuery(querySearch));
