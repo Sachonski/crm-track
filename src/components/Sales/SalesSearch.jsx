@@ -70,16 +70,16 @@ const SalesSearch = () => {
     .toString()
     .padStart(2, "0")}`;
 
-    const querySearch = `SELECT p.*, c.*, p.id AS id, p.sales_rep AS sales_rep, CONCAT('$', FORMAT(p.payment_amount, 2)) AS payment_amount, CASE WHEN c.utm_source <> 'null' THEN c.utm_source END AS utm_source, DATE_FORMAT(p.payment_date, '%Y-%m-%d %H:%i') AS payment_date, CASE WHEN c.full_name IS NULL THEN CONCAT(c.first_name, ' ', c.last_name) ELSE c.full_name END AS full_name FROM Payments p JOIN Contacts c ON p.fk_contact = COALESCE(c.id, (SELECT id FROM Contacts WHERE email = c.email AND full_name IS NOT NULL ORDER BY id LIMIT 1)) WHERE (p.payment_date >= '${formattedDateStart}' AND p.payment_date <= '${formattedDateEnd}') AND ((COALESCE(c.full_name, (SELECT full_name FROM Contacts WHERE email = c.email AND full_name IS NOT NULL ORDER BY id LIMIT 1)) LIKE '%${searchTerm}%' OR CONCAT(c.first_name, ' ', c.last_name) LIKE '%${searchTerm}%') OR c.email LIKE '%${searchTerm}%' OR c.phone LIKE '%${searchTerm}%' OR CAST(p.payment_amount AS CHAR) LIKE '%${searchTerm}%' OR p.product_name LIKE '%${searchTerm}%' OR c.sales_rep LIKE '%${searchTerm}%')`;
-
+    const querySearch = `SELECT p.*, c.*, p.id as id, p.sales_rep as sales_rep, CONCAT('$', FORMAT(p.payment_amount, 2)) AS payment_amount, CASE WHEN c.utm_source <> 'null' THEN c.utm_source END AS utm_source, DATE_FORMAT(p.payment_date, '%Y-%m-%d %H:%i') AS payment_date FROM Payments p JOIN (SELECT MAX(c1.id) AS id, MAX(c1.full_name) AS full_name, MAX(c1.email) AS email, MAX(c1.phone) AS phone, MAX(c1.sales_rep) AS sales_rep FROM Contacts c1 LEFT JOIN Contacts c2 ON c2.email = c1.email AND c2.full_name IS NOT NULL GROUP BY c1.id) c ON p.fk_contact = c.id WHERE (p.payment_date >= '${formattedDateStart}' AND p.payment_date <= '${formattedDateEnd}') AND (c.full_name LIKE '%${searchTerm}%' OR c.email LIKE '%${searchTerm}%' OR c.phone LIKE '%${searchTerm}%' OR CAST(p.payment_amount AS CHAR) LIKE '%${searchTerm}%' OR p.product_name LIKE '%${searchTerm}%' OR c.sales_rep LIKE '%${searchTerm}%' OR (c.full_name IS NOT NULL));`;
 
 
   const fetchQuery = async (query) => {
-    const res = await axios.post("http://localhost:3001/", {
+    const res = await axios.post("https://backend-server-db-4e7fb706df42.herokuapp.com/", {
       query: query,
     });
+    console.log("el res data",res.data)
     if (res.data[0]) {
-      console.log(res.data)
+      
       return res.data;
     } else {
       return [];
